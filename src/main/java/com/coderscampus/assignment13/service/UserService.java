@@ -35,7 +35,7 @@ public class UserService {
 	
 	public User findExactlyOneUserByUsername(String username) {
 		List<User> users = userRepo.findExactlyOneUserByUsername(username);
-		if (users.size() > 0)
+		if (!users.isEmpty())
 			return users.get(0);
 		else
 			return new User();
