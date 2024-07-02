@@ -15,13 +15,15 @@ import com.coderscampus.assignment13.service.UserService;
 
 @Controller
 public class UserController {
-	
-	@Autowired
-	private UserService userService;
+
+	UserService userService;
+
+	UserController(UserService userService) {
+		this.userService = userService;
+	}
 	
 	@GetMapping("/register")
 	public String getCreateUser (ModelMap model) {
-		
 		model.put("user", new User());
 		
 		return "register";
