@@ -17,10 +17,26 @@
 				<div>
 					Full Name: <input type="text" th:field="${user.name}" />
 				</div>
-				<br>
+				<hr>
 				<div>
-					Address Line 1: <
+					Address Line 1: <input type="text" th:field="${user.address.addressLine1}">
 				</div>
+				<div>
+					Address Line 2: <input type="text" th:field="${user.address.addressLine2}">
+				</div>
+				<div>
+					City: <input type="text" th:field="${user.address.city}">
+				</div>
+				<div>
+					Region: <input type="text" th:field="${user.address.region}">
+				</div>
+				<div>
+					Country: <input type="text" th:field="${user.address.country}">
+				</div>
+				<div>
+					ZipCode: <input type="text" th:field="${user.address.zipCode}">
+				</div>
+				<br>
 				<div>
 					<input type="submit" value="Update User Account" />
 				</div>
@@ -28,6 +44,17 @@
 			<form th:action="@{/users/{userId}/delete(userId=${user.userId})}" method="post">
 				<input type="submit" value="Delete User Account" />
 			</form>
+<!--			Note to self: Go in later to futz with hr's css and get rid of these br-->
+			<br>
+			<hr>
+			<h2>Accounts</h2>
+			<div>
+				<div th:each="account : ${user.accounts}">
+					<div>
+						<a th:href="@{/users/{userId}/accounts/{accountId}(userId=${user.userId},accountId=${account.accountId})}" th:text="${account.accountName}"></a>
+					</div>
+				</div>
+			</div>
 		</div>
 		
 		<div th:unless="${#lists.size(users) == 1}" th:each="user : ${users}">
