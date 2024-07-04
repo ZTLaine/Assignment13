@@ -15,16 +15,19 @@ import com.coderscampus.assignment13.repository.UserRepository;
 
 @Service
 public class UserService {
-	
-	@Autowired
-	private UserRepository userRepo;
-	@Autowired
-	private AccountRepository accountRepo;
-	
+
+	private final UserRepository userRepo;
+	private final AccountRepository accountRepo;
+
+	UserService(UserRepository userRepo, AccountRepository accountRepo) {
+		this.userRepo = userRepo;
+		this.accountRepo = accountRepo;
+	}
+
 	public List<User> findByUsername(String username) {
 		return userRepo.findByUsername(username);
 	}
-	
+
 	public List<User> findByNameAndUsername(String name, String username) {
 		return userRepo.findByNameAndUsername(name, username);
 	}

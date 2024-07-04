@@ -7,5 +7,4 @@ import com.coderscampus.assignment13.domain.Account;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long>{
-
 }
