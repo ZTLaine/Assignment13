@@ -66,7 +66,7 @@ public class UserController {
     }
 
     @PostMapping("/users/{userId}/delete")
-    public String deleteOneUser(@PathVariable Long userId) {
+    public String postDeleteOneUser(@PathVariable Long userId) {
         userService.delete(userId);
         return "redirect:/users";
     }
@@ -82,9 +82,9 @@ public class UserController {
         return "account";
     }
 
-    @PostMapping("users/{userId}/accounts/{accountId)")
+    @PostMapping("users/{userId}/accounts/{accountId}")
     public String postAccountEdit(User user, Account account) {
-        userService.saveUser(user);
-        return "redirect:/users/" + user.getUserId() + "/accounts" + account.getAccountId();
+        accountService.saveAccount(user, account);
+        return "redirect:/users/" + user.getUserId();
     }
 }

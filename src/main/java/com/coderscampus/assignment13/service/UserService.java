@@ -53,6 +53,9 @@ public class UserService {
             accountRepo.save(checking);
             accountRepo.save(savings);
         }
+        else{
+            accountRepo.saveAll(user.getAccounts());
+        }
         return userRepo.save(user);
     }
 

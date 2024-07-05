@@ -11,9 +11,9 @@
         <div>
             Account Name: <input type="text" th:field="${account.accountName}"/>
         </div>
-    </form>
-    <form th:action="@{/users/{userId}/accounts/{accountId}(userId=${user.userId},accountId=${account.accountId})}"
-          method="post">
+<!--    </form>-->
+<!--    <form th:action="@{/users/{userId}/accounts/{accountId}(userId=${user.userId},accountId=${account.accountId})}"-->
+<!--          method="post">-->
         <input type="submit" value="Save Account"/>
     </form>
     <!--			Note to self: Go in later to futz with hr's css and get rid of these br-->
