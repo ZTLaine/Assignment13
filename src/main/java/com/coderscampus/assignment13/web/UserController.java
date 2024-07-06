@@ -1,8 +1,10 @@
 package com.coderscampus.assignment13.web;
 
 import com.coderscampus.assignment13.domain.Account;
+import com.coderscampus.assignment13.domain.Address;
 import com.coderscampus.assignment13.domain.User;
 import com.coderscampus.assignment13.service.AccountService;
+import com.coderscampus.assignment13.service.AddressService;
 import com.coderscampus.assignment13.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,18 +13,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.security.auth.login.AccountNotFoundException;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Set;
 
 @Controller
 public class UserController {
 
     private final AccountService accountService;
+    private final AddressService addressService;
     UserService userService;
 
-    UserController(UserService userService, AccountService accountService) {
+    UserController(UserService userService, AccountService accountService, AddressService addressService) {
         this.userService = userService;
         this.accountService = accountService;
+        this.addressService = addressService;
     }
 
     @GetMapping("/register")
@@ -47,20 +51,20 @@ public class UserController {
         if (users.size() == 1) {
             model.put("user", users.iterator().next());
         }
-
         return "users";
     }
 
     @GetMapping("/users/{userId}")
     public String getOneUser(ModelMap model, @PathVariable Long userId) {
         User user = userService.findById(userId);
-        model.put("users", Arrays.asList(user));
+        model.put("users", Collections.singletonList(user));
         model.put("user", user);
         return "users";
     }
 
     @PostMapping("/users/{userId}")
     public String postOneUser(User user) {
+//        addressService.saveAddress(address);
         userService.saveUser(user);
         return "redirect:/users/" + user.getUserId();
     }
