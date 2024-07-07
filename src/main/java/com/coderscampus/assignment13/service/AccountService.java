@@ -3,6 +3,7 @@ package com.coderscampus.assignment13.service;
 import com.coderscampus.assignment13.domain.Account;
 import com.coderscampus.assignment13.domain.User;
 import com.coderscampus.assignment13.repository.AccountRepository;
+import com.coderscampus.assignment13.repository.AddressRepository;
 import com.coderscampus.assignment13.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +15,12 @@ public class AccountService {
 
     private final UserRepository userRepo;
     private final AccountRepository accountRepo;
+    private final AddressRepository addressRepo;
 
-    AccountService(UserRepository userRepo, AccountRepository accountRepo) {
+    AccountService(UserRepository userRepo, AccountRepository accountRepo, AddressRepository addressRepo) {
         this.userRepo = userRepo;
         this.accountRepo = accountRepo;
+        this.addressRepo = addressRepo;
     }
 
     public Account findById(Long accountId) throws AccountNotFoundException {

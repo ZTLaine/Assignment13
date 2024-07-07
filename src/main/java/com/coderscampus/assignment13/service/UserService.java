@@ -18,11 +18,13 @@ public class UserService {
     private final UserRepository userRepo;
     private final AccountRepository accountRepo;
     private final AddressRepository addressRepo;
+    private final AddressService addressService;
 
-    UserService(UserRepository userRepo, AccountRepository accountRepo, AddressRepository addressRepo) {
+    UserService(UserRepository userRepo, AccountRepository accountRepo, AddressRepository addressRepo, AddressService addressService) {
         this.userRepo = userRepo;
         this.accountRepo = accountRepo;
         this.addressRepo = addressRepo;
+        this.addressService = addressService;
     }
 
     public List<User> findByUsername(String username) {
@@ -37,25 +39,30 @@ public class UserService {
         return userOpt.orElse(new User());
     }
 
-    public User saveUser(User user) {
+    public User newUser(User user) {
         if (user.getUserId() == null) {
-            Address address = new Address();
-            address.setUser(user);
-            address.setUserId(user.getUserId());
-            addressRepo.save(address);
-
             Account checking = new Account();
             checking.setAccountName("Checking Account");
             checking.getUsers().add(user);
+
             Account savings = new Account();
             savings.setAccountName("Savings Account");
             savings.getUsers().add(user);
 
             user.getAccounts().add(checking);
             user.getAccounts().add(savings);
-//            accountRepo.save(checking);
-//            accountRepo.save(savings);
+
+            Address address = new Address();
+            address.setUser(user);
+            address.setUserId(user.getUserId());
+            user.setAddress(address);
         }
+        return userRepo.save(user);
+    }
+
+    public User saveUser(User user) {
+        user.getAddress().setUserId(user.getUserId());
+        user.getAddress().setUser(user);
 
         return userRepo.save(user);
     }
