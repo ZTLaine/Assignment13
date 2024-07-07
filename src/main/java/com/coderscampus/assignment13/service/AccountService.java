@@ -25,6 +25,7 @@ public class AccountService {
 
     public Account findById(Long accountId) throws AccountNotFoundException {
         Optional<Account> accountOpt = accountRepo.findById(accountId);
+        System.out.println("After accountRepo findById is called");
         if (accountOpt.isPresent()) {
             return accountOpt.get();
         } else
@@ -37,6 +38,7 @@ public class AccountService {
             user.getAccounts().add(account);
             userRepo.save(user);
         }
+        System.out.println("Just before accountRepo save is called");
         return accountRepo.save(account);
     }
 }

@@ -2,6 +2,7 @@ package com.coderscampus.assignment13.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 
 @Getter
 @Setter
+//@ToString
 @Entity // Class name = User, DB Table name = user
 @Table(name = "users")
 public class User {
@@ -18,9 +20,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
+    @ToString.Exclude
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Address address;
 
+    @ToString.Exclude
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "user_account",
             joinColumns = @JoinColumn(name = "user_id"),

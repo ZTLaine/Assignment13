@@ -68,14 +68,15 @@ public class UserController {
     @PostMapping("/users/{userId}")
     public String postOneUser(@ModelAttribute User user,@ModelAttribute Address address, BindingResult bindingResult) {
 //        addressService.saveAddress(address);
-        if (bindingResult.hasErrors()) {
-            // Log the errors
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                System.out.println("Error in object '" + error.getObjectName() + "' on field '" + error.getField() + "': " + error.getDefaultMessage());
-            }
-            return "yourFormView"; // Return to the form view
-        }
+//        if (bindingResult.hasErrors()) {
+//            // Log the errors
+//            for (FieldError error : bindingResult.getFieldErrors()) {
+//                System.out.println("Error in object '" + error.getObjectName() + "' on field '" + error.getField() + "': " + error.getDefaultMessage());
+//            }
+//            return "yourFormView"; // Return to the form view
+//        }
         userService.saveUser(user);
+        System.out.println("Just after repo call");
         return "redirect:/users/" + user.getUserId();
     }
 

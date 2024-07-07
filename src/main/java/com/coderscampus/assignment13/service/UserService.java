@@ -35,7 +35,9 @@ public class UserService {
     }
 
     public User findById(Long userId) {
+        System.out.println("Before findById repo call");
         Optional<User> userOpt = userRepo.findById(userId);
+        System.out.println("After findById repo call");
         return userOpt.orElse(new User());
     }
 
@@ -61,8 +63,10 @@ public class UserService {
     }
 
     public User saveUser(User user) {
+        System.out.println("Start of saveUser");
         user.getAddress().setUserId(user.getUserId());
         user.getAddress().setUser(user);
+        System.out.println("Just before repo call");
 
         return userRepo.save(user);
     }
@@ -72,6 +76,7 @@ public class UserService {
     }
 
     public Set<User> findAll() {
+        System.out.println("Before findAll repo call");
         return userRepo.findAllUsersWithAccountsAndAddresses();
     }
 }

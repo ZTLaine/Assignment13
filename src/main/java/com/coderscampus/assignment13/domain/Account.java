@@ -2,6 +2,7 @@ package com.coderscampus.assignment13.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +25,11 @@ public class Account {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long accountId;
 
+	@ToString.Exclude
 	@ManyToMany(mappedBy = "accounts")
 	List<User> users = new ArrayList<>();
 
+	@ToString.Exclude
 	@OneToMany(mappedBy = "account")
 	private List<Transaction> transactions = new ArrayList<Transaction>();
 
