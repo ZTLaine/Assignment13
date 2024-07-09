@@ -65,7 +65,7 @@ public class UserController {
         User user = userService.findById(userId);
         model.put("users", Collections.singletonList(user));
         model.put("user", user);
-        return "users";
+        return "user";
     }
 
     @PostMapping("/users/{userId}")
