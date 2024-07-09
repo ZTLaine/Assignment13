@@ -28,20 +28,6 @@ public class UserService {
         this.addressService = addressService;
     }
 
-//    public User findByUsername(String username) {
-//        if (username == null || username.isEmpty()) {
-//            throw new IllegalArgumentException("Username cannot be null or empty");
-//        }
-//        List<User> user = userRepo.findByUsername(username);
-//        if(user.size() > 1){
-//            for(User foundUser : user){
-//                System.out.println(foundUser);
-//            }
-//            throw new NonUniqueResultException(user.size() + " users with this name found!");
-//        }
-//        return user.get(0);
-//    }
-
     public User findById(Long userId) {
         if (userId == null)
         {

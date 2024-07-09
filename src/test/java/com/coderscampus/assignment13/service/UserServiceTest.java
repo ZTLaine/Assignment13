@@ -109,6 +109,21 @@ class UserServiceTest {
     }
 
     @Test
+    void New_User(){
+        User testUser1 = userService.newUser(user1);
+        User testUser2 = userService.newUser(user2);
+        User newUser = userService.newUser(new User());
+
+        assertEquals(user1, testUser1);
+        assertEquals(user2, testUser2);
+        assertNotNull(newUser.getUserId());
+        assertEquals(newUser.getAccounts().get(0).getAccountName(),
+                "Checking Account");
+        assertTrue(newUser.getAccounts().get(0).getUsers().contains(newUser));
+
+    }
+
+    @Test
     void Save_User() {
     }
 
