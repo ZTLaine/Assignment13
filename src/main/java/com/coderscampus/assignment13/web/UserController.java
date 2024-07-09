@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.security.auth.login.AccountNotFoundException;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -48,7 +49,7 @@ public class UserController {
 
     @GetMapping("/users")
     public String getAllUsers(ModelMap model) {
-        Set<User> users = userService.findAll();
+        List<User> users = userService.findAll();
 
         model.put("users", users);
         if (users.size() == 1) {

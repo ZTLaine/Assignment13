@@ -8,6 +8,7 @@ import com.coderscampus.assignment13.repository.AddressRepository;
 import com.coderscampus.assignment13.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.NonUniqueResultException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -27,14 +28,30 @@ public class UserService {
         this.addressService = addressService;
     }
 
-    public List<User> findByUsername(String username) {
-        if (username == null || username.isEmpty()) {
-            throw new IllegalArgumentException("Username cannot be null or empty");
-        }
-        return userRepo.findByUsername(username);
-    }
+//    public User findByUsername(String username) {
+//        if (username == null || username.isEmpty()) {
+//            throw new IllegalArgumentException("Username cannot be null or empty");
+//        }
+//        List<User> user = userRepo.findByUsername(username);
+//        if(user.size() > 1){
+//            for(User foundUser : user){
+//                System.out.println(foundUser);
+//            }
+//            throw new NonUniqueResultException(user.size() + " users with this name found!");
+//        }
+//        return user.get(0);
+//    }
 
     public User findById(Long userId) {
+        if (userId == null)
+        {
+            throw new IllegalArgumentException("userId cannot be null!");
+        }
+
+        if(userId < 0){
+            throw new IllegalArgumentException("userId cannot be negative!");
+        }
+
         System.out.println("Before findById repo call");
         Optional<User> userOpt = userRepo.findById(userId);
         System.out.println("After findById repo call");
@@ -75,7 +92,7 @@ public class UserService {
         userRepo.deleteById(userId);
     }
 
-    public Set<User> findAll() {
+    public List<User> findAll() {
         System.out.println("Before findAll repo call");
         return userRepo.findAllUsersWithAccountsAndAddresses();
     }
