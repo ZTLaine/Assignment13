@@ -41,10 +41,14 @@ public class UserService {
         System.out.println("Before findById repo call");
         Optional<User> userOpt = userRepo.findById(userId);
         System.out.println("After findById repo call");
-        return userOpt.orElse(new User());
+        return userOpt.orElseThrow(() -> new RuntimeException("User not found."));
     }
 
     public User newUser(User user) {
+        if (user == null){
+            throw new IllegalArgumentException("user cannot be null!");
+        }
+
         if (user.getUserId() == null) {
             Account checking = new Account();
             checking.setAccountName("Checking Account");
@@ -65,6 +69,8 @@ public class UserService {
         return userRepo.save(user);
     }
 
+//    Why does the user getting passed into this have no accounts?
+//    Why is the join table cleared??
     public User saveUser(User user) {
         System.out.println("Start of saveUser");
         user.getAddress().setUserId(user.getUserId());

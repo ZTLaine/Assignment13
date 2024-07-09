@@ -104,6 +104,8 @@ class UserServiceTest {
 
         assertEquals(user1, testUser1);
         assertEquals(user2, testUser2);
+
+        assertThrows(RuntimeException.class, () -> userService.findById(200L));
         assertThrows(IllegalArgumentException.class, () -> userService.findById(-1L));
         assertThrows(IllegalArgumentException.class, () -> userService.findById(null));
     }
@@ -120,11 +122,19 @@ class UserServiceTest {
         assertEquals(newUser.getAccounts().get(0).getAccountName(),
                 "Checking Account");
         assertTrue(newUser.getAccounts().get(0).getUsers().contains(newUser));
-
+        assertThrows(IllegalArgumentException.class, () -> userService.newUser(null));
     }
 
     @Test
     void Save_User() {
+        User userWithAccounts = userService.newUser(new User());
+        String addressTest = "Test address";
+        userWithAccounts.getAddress().setAddressLine1(addressTest);
+        userWithAccounts = userService.saveUser(userWithAccounts);
+
+        assertEquals(userWithAccounts.getAddress().getAddressLine1(), addressTest);
+        assertEquals(userWithAccounts.getAccounts().get(0).getAccountName(),
+                "Checking Account");
     }
 
     @Test

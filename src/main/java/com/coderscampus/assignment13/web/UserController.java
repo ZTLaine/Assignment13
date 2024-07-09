@@ -19,6 +19,7 @@ import javax.security.auth.login.AccountNotFoundException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -50,6 +51,7 @@ public class UserController {
     @GetMapping("/users")
     public String getAllUsers(ModelMap model) {
         List<User> users = userService.findAll();
+        users = users.stream().distinct().collect(Collectors.toList());
 
         model.put("users", users);
         if (users.size() == 1) {
@@ -67,15 +69,7 @@ public class UserController {
     }
 
     @PostMapping("/users/{userId}")
-    public String postOneUser(@ModelAttribute User user,@ModelAttribute Address address, BindingResult bindingResult) {
-//        addressService.saveAddress(address);
-//        if (bindingResult.hasErrors()) {
-//            // Log the errors
-//            for (FieldError error : bindingResult.getFieldErrors()) {
-//                System.out.println("Error in object '" + error.getObjectName() + "' on field '" + error.getField() + "': " + error.getDefaultMessage());
-//            }
-//            return "yourFormView"; // Return to the form view
-//        }
+    public String postOneUser(@ModelAttribute User user) {
         userService.saveUser(user);
         System.out.println("Just after repo call");
         return "redirect:/users/" + user.getUserId();

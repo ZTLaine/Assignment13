@@ -12,7 +12,6 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-//@ToString
 @Entity // Class name = User, DB Table name = user
 @Table(name = "users")
 public class User {
