@@ -90,6 +90,14 @@ class UserServiceTest {
     }
 
     @Test
+    void Find_All_When_Empty(){
+        userRepo.deleteAll();
+        List<User> users = userService.findAll();
+
+        assertEquals(0, users.size());
+    }
+
+    @Test
     void Find_By_Id() {
         User testUser1 = userService.findById(user1.getUserId());
         User testUser2 = userService.findById(user2.getUserId());
