@@ -8,10 +8,8 @@ import com.coderscampus.assignment13.repository.AddressRepository;
 import com.coderscampus.assignment13.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.NonUniqueResultException;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UserService {
@@ -29,12 +27,11 @@ public class UserService {
     }
 
     public User findById(Long userId) {
-        if (userId == null)
-        {
+        if (userId == null) {
             throw new IllegalArgumentException("userId cannot be null!");
         }
 
-        if(userId < 0){
+        if (userId < 0) {
             throw new IllegalArgumentException("userId cannot be negative!");
         }
 
@@ -45,7 +42,7 @@ public class UserService {
     }
 
     public User newUser(User user) {
-        if (user == null){
+        if (user == null) {
             throw new IllegalArgumentException("user cannot be null!");
         }
 
@@ -61,23 +58,33 @@ public class UserService {
             user.getAccounts().add(checking);
             user.getAccounts().add(savings);
 
-            Address address = new Address();
-            address.setUser(user);
-            address.setUserId(user.getUserId());
-            user.setAddress(address);
+            addAddress(user, new Address());
+//            Address address = new Address();
+//            address.setUser(user);
+//            address.setUserId(user.getUserId());
+//            user.setAddress(address);
         }
         return userRepo.save(user);
     }
 
-//    Why does the user getting passed into this have no accounts?
+    //    Why does the user getting passed into this have no accounts?
 //    Why is the join table cleared??
     public User saveUser(User user) {
-        System.out.println("Start of saveUser");
-        user.getAddress().setUserId(user.getUserId());
-        user.getAddress().setUser(user);
-        System.out.println("Just before repo call");
+        User existingUser = findById(user.getUserId());
 
-        return userRepo.save(user);
+        if (existingUser != null) {
+            existingUser.setName(user.getName());
+            existingUser.setUsername(user.getUsername());
+            existingUser.setPassword(user.getPassword());
+            existingUser.setAddress(user.getAddress());
+        }
+
+        existingUser = addAddress(existingUser, user.getAddress());
+
+//        user.getAddress().setUserId(user.getUserId());
+//        user.getAddress().setUser(user);
+
+        return userRepo.save(existingUser);
     }
 
     public void delete(Long userId) {
@@ -85,7 +92,21 @@ public class UserService {
     }
 
     public List<User> findAll() {
-        System.out.println("Before findAll repo call");
         return userRepo.findAllUsersWithAccountsAndAddresses();
+    }
+
+    public User addAddress(User user, Address address) {
+        if (user == null || address == null) {
+            throw new IllegalArgumentException("user or address cannot be null!");
+        }
+
+        address.setUser(user);
+        user.setAddress(address);
+
+        if (user.getUserId() != null) {
+            address.setUserId(user.getUserId());
+        }
+
+        return user;
     }
 }

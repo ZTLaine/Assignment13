@@ -1,5 +1,6 @@
 package com.coderscampus.assignment13.service;
 
+import com.coderscampus.assignment13.domain.Address;
 import com.coderscampus.assignment13.domain.User;
 import com.coderscampus.assignment13.repository.AccountRepository;
 import com.coderscampus.assignment13.repository.AddressRepository;
@@ -10,11 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.transaction.Transactional;
-
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -90,7 +87,7 @@ class UserServiceTest {
     }
 
     @Test
-    void Find_All_When_Empty(){
+    void Find_All_When_Empty() {
         userRepo.deleteAll();
         List<User> users = userService.findAll();
 
@@ -111,7 +108,7 @@ class UserServiceTest {
     }
 
     @Test
-    void New_User(){
+    void New_User() {
         User testUser1 = userService.newUser(user1);
         User testUser2 = userService.newUser(user2);
         User newUser = userService.newUser(new User());
@@ -138,6 +135,24 @@ class UserServiceTest {
     }
 
     @Test
-    void Delete() {
+    void Add_Address() {
+        user1 = userService.addAddress(user1, new Address());
+        user2 = userService.addAddress(user2, new Address());
+        user1.getAddress().setAddressLine1("test");
+
+        userRepo.save(user1);
+        userRepo.save(user2);
+
+        assertNotNull(user1.getAddress());
+        assertNotNull(user2.getAddress());
+        assertEquals(user1, user1.getAddress().getUser());
+        assertEquals(user2, user2.getAddress().getUser());
+        assertEquals(user1.getUserId(), user1.getAddress().getUserId());
+        assertEquals(user2.getUserId(), user2.getAddress().getUserId());
+        assertEquals(user1.getAddress().getAddressLine1(), "test");
+        assertNull(user2.getAddress().getAddressLine1());
+
+        assertThrows(IllegalArgumentException.class, () -> userService.addAddress(null, new Address()));
+        assertThrows(IllegalArgumentException.class, () -> userService.addAddress(user1, null));
     }
 }
