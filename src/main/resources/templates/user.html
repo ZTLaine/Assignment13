@@ -47,7 +47,6 @@
 <form th:action="@{/users/{userId}/delete(userId=${user.userId})}" method="post">
     <input type="submit" value="Delete User Account"/>
 </form>
-<!--			Note to self: Go in later to futz with hr's css and get rid of these br-->
 <br>
 <hr>
 
@@ -59,6 +58,12 @@
                th:text="${account.accountName}"></a>
         </div>
     </div>
+    <br>
+    <form th:action="@{/users/{userId}/accounts(userId=${user.userId})}" method="post">
+        <input type="submit" value="Create New Bank Account"/>
+    </form>
+    <br>
+    <a th:href="@{/users/}">Back</a>
 </div>
 </body>
 </html>

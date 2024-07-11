@@ -29,6 +29,7 @@ public class User {
 
     @ToString.Exclude
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OrderBy("accountId ASC")
     @JoinTable(name = "user_account",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "account_id"))

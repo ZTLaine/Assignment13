@@ -49,6 +49,13 @@ public class UserController {
         List<User> users = userService.findAll();
         users = users.stream().distinct().collect(Collectors.toList());
 
+        System.out.println();
+        System.out.println("~~~~~");
+        for (User user : users) {
+            for (Account account : user.getAccounts()) {
+                System.out.println(account.getAccountName());
+            }
+        }
         model.put("users", users);
         if (users.size() == 1) {
             model.put("user", users.iterator().next());
@@ -59,6 +66,11 @@ public class UserController {
     @GetMapping("/users/{userId}")
     public String getOneUser(ModelMap model, @PathVariable Long userId) {
         User user = userService.findById(userId);
+        System.out.println();
+        System.out.println("~~~~~");
+        for (Account account : user.getAccounts()) {
+            System.out.println(account.getAccountName());
+        }
         model.put("users", Collections.singletonList(user));
         model.put("user", user);
         return "user";

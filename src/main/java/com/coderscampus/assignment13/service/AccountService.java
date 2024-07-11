@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.AccountNotFoundException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,12 +23,10 @@ public class AccountService {
 
     private final UserRepository userRepo;
     private final AccountRepository accountRepo;
-//    private final UserService userService;
 
     AccountService(UserRepository userRepo, AccountRepository accountRepo) {
         this.userRepo = userRepo;
         this.accountRepo = accountRepo;
-//        this.userService = userService;
     }
 
     public Account findById(Long accountId) throws AccountNotFoundException {
@@ -41,7 +38,7 @@ public class AccountService {
     }
 
     public Account saveAccount(User user, Account account) {
-        if(!accountRepo.existsById(account.getAccountId())) {
+        if (!accountRepo.existsById(account.getAccountId())) {
             account.getUsers().add(user);
             user.getAccounts().add(account);
             userRepo.save(user);
@@ -55,15 +52,13 @@ public class AccountService {
             throw new IllegalArgumentException("userId cannot be null!");
         }
 
-
-//        List<Account> accounts = new ArrayList<>();
-//        accounts.add(new Account());
         Account account = new Account();
         User user = userService.findById(userId);
-        if(user.getAccounts() == null) {
+        if (user.getAccounts() == null) {
             user.setAccounts(new ArrayList<>());
         }
 
+        account.setAccountName("Account #" + (user.getAccounts().size() + 1));
         user.getAccounts().add(account);
         account.setUsers(new ArrayList<>());
         account.getUsers().add(user);

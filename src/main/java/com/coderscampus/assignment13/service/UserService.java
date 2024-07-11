@@ -103,7 +103,7 @@ public class UserService {
             throw new IllegalArgumentException("userId cannot be null!");
         }
 
-        User user = findById(userId);
-        accountService.addNewAccount(userId);
+        User user = accountService.addNewAccount(userId);
+        userRepo.save(user);
     }
 }

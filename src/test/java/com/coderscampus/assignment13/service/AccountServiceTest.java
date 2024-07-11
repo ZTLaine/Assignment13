@@ -1,7 +1,5 @@
 package com.coderscampus.assignment13.service;
 
-import com.coderscampus.assignment13.domain.Account;
-import com.coderscampus.assignment13.domain.Address;
 import com.coderscampus.assignment13.domain.User;
 import com.coderscampus.assignment13.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -16,8 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class AccountServiceTest {
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private AccountService accountService;
@@ -28,23 +24,12 @@ class AccountServiceTest {
     private User user1;
     private User user2;
 
-    private Account account1;
-    private Account account2;
-    private Account account3;
-
     @BeforeEach
     void setUp() {
         userRepo.deleteAll();
 
         user1 = new User();
         user2 = new User();
-
-//        account1 = new Account();
-//        account2 = new Account();
-//        account3 = new Account();
-//
-//        account1.setAccountName("Test name 1");
-//        account2.setAccountName("Test name 2");
 
         userRepo.save(user1);
         userRepo.save(user2);
