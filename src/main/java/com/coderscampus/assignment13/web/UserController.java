@@ -1,15 +1,15 @@
+//  7/10/24
+//  Zack Laine
+//  Assignment 13
+
 package com.coderscampus.assignment13.web;
 
 import com.coderscampus.assignment13.domain.Account;
-import com.coderscampus.assignment13.domain.Address;
 import com.coderscampus.assignment13.domain.User;
 import com.coderscampus.assignment13.service.AccountService;
-import com.coderscampus.assignment13.service.AddressService;
 import com.coderscampus.assignment13.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,20 +18,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.security.auth.login.AccountNotFoundException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
 
     private final AccountService accountService;
-    private final AddressService addressService;
     UserService userService;
 
-    UserController(UserService userService, AccountService accountService, AddressService addressService) {
+    UserController(UserService userService, AccountService accountService) {
         this.userService = userService;
         this.accountService = accountService;
-        this.addressService = addressService;
     }
 
     @GetMapping("/register")
@@ -43,7 +40,6 @@ public class UserController {
 
     @PostMapping("/register")
     public String postCreateUser(User user) {
-        System.out.println(user);
         userService.newUser(user);
         return "redirect:/register";
     }
@@ -71,7 +67,6 @@ public class UserController {
     @PostMapping("/users/{userId}")
     public String postOneUser(@ModelAttribute User user) {
         userService.saveUser(user);
-        System.out.println("Just after repo call");
         return "redirect:/users/" + user.getUserId();
     }
 
@@ -81,9 +76,15 @@ public class UserController {
         return "redirect:/users";
     }
 
+    @PostMapping("users/{userId}/accounts")
+    public String postAddAccount(@PathVariable Long userId, @ModelAttribute Account account) {
+        userService.addAccount(userId);
+
+        return "redirect:/users/" + userId;
+    }
+
     @GetMapping("users/{userId}/accounts/{accountId}")
     public String getAccountEdit(ModelMap model, @PathVariable Long userId, @PathVariable Long accountId) throws AccountNotFoundException {
-        System.out.println("IN EDIT");
         User user = userService.findById(userId);
         Account account = accountService.findById(accountId);
         model.put("user", user);

@@ -1,9 +1,11 @@
+//  7/10/24
+//  Zack Laine
+//  Assignment 13
+
 package com.coderscampus.assignment13.service;
 
 import com.coderscampus.assignment13.domain.Address;
 import com.coderscampus.assignment13.domain.User;
-import com.coderscampus.assignment13.repository.AccountRepository;
-import com.coderscampus.assignment13.repository.AddressRepository;
 import com.coderscampus.assignment13.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,10 +24,6 @@ class UserServiceTest {
 
     @Autowired
     private UserRepository userRepo;
-    @Autowired
-    private AccountRepository accountRepo;
-    @Autowired
-    private AddressRepository addressRepo;
 
     private User user1;
     private User user2;

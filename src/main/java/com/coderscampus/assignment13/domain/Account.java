@@ -1,3 +1,7 @@
+//  7/10/24
+//  Zack Laine
+//  Assignment 13
+
 package com.coderscampus.assignment13.domain;
 
 import lombok.Getter;
@@ -31,7 +35,7 @@ public class Account {
 
 	@ToString.Exclude
 	@OneToMany(mappedBy = "account")
-	private List<Transaction> transactions = new ArrayList<Transaction>();
+	private List<Transaction> transactions = new ArrayList<>();
 
 	@Column(length = 100)
 	private String accountName;

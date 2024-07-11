@@ -1,3 +1,7 @@
+//  7/10/24
+//  Zack Laine
+//  Assignment 13
+
 package com.coderscampus.assignment13.domain;
 
 import lombok.Data;

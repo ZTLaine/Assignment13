@@ -1,5 +1,9 @@
+<!--  7/10/24-->
+<!--  Zack Laine-->
+<!--  Assignment 13-->
+
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title th:text="${account.accountName}"></title>
 </head>
@@ -11,14 +15,11 @@
         <div>
             Account Name: <input type="text" th:field="${account.accountName}"/>
         </div>
-<!--    </form>-->
-<!--    <form th:action="@{/users/{userId}/accounts/{accountId}(userId=${user.userId},accountId=${account.accountId})}"-->
-<!--          method="post">-->
         <input type="submit" value="Save Account"/>
     </form>
-    <!--			Note to self: Go in later to futz with hr's css and get rid of these br-->
     <br>
     <hr>
+
     <div>
         <a th:href="@{/users/{userId}(userId=${user.userId})}">Back</a>
     </div>

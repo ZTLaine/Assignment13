@@ -1,9 +1,12 @@
+//  7/10/24
+//  Zack Laine
+//  Assignment 13
+
 package com.coderscampus.assignment13.service;
 
 import com.coderscampus.assignment13.domain.Account;
 import com.coderscampus.assignment13.domain.User;
 import com.coderscampus.assignment13.repository.AccountRepository;
-import com.coderscampus.assignment13.repository.AddressRepository;
 import com.coderscampus.assignment13.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +18,12 @@ public class AccountService {
 
     private final UserRepository userRepo;
     private final AccountRepository accountRepo;
-    private final AddressRepository addressRepo;
+    private final UserService userService;
 
-    AccountService(UserRepository userRepo, AccountRepository accountRepo, AddressRepository addressRepo) {
+    AccountService(UserRepository userRepo, AccountRepository accountRepo, UserService userService) {
         this.userRepo = userRepo;
         this.accountRepo = accountRepo;
-        this.addressRepo = addressRepo;
+        this.userService = userService;
     }
 
     public Account findById(Long accountId) throws AccountNotFoundException {
@@ -40,5 +43,11 @@ public class AccountService {
         }
         System.out.println("Just before accountRepo save is called");
         return accountRepo.save(account);
+    }
+
+    public User addAccount(Long userId) {
+        User user = userService.findById(userId);
+        user.getAccounts().add(new Account());
+
     }
 }

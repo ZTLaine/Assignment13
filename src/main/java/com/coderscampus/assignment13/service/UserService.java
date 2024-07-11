@@ -1,10 +1,12 @@
+//  7/10/24
+//  Zack Laine
+//  Assignment 13
+
 package com.coderscampus.assignment13.service;
 
 import com.coderscampus.assignment13.domain.Account;
 import com.coderscampus.assignment13.domain.Address;
 import com.coderscampus.assignment13.domain.User;
-import com.coderscampus.assignment13.repository.AccountRepository;
-import com.coderscampus.assignment13.repository.AddressRepository;
 import com.coderscampus.assignment13.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +17,12 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepo;
-    private final AccountRepository accountRepo;
-    private final AddressRepository addressRepo;
-    private final AddressService addressService;
+    private final AccountService accountService;
 
-    UserService(UserRepository userRepo, AccountRepository accountRepo, AddressRepository addressRepo, AddressService addressService) {
+
+    UserService(UserRepository userRepo, AccountService accountService) {
         this.userRepo = userRepo;
-        this.accountRepo = accountRepo;
-        this.addressRepo = addressRepo;
-        this.addressService = addressService;
+        this.accountService = accountService;
     }
 
     public User findById(Long userId) {
@@ -35,9 +34,7 @@ public class UserService {
             throw new IllegalArgumentException("userId cannot be negative!");
         }
 
-        System.out.println("Before findById repo call");
         Optional<User> userOpt = userRepo.findById(userId);
-        System.out.println("After findById repo call");
         return userOpt.orElseThrow(() -> new RuntimeException("User not found."));
     }
 
@@ -59,16 +56,10 @@ public class UserService {
             user.getAccounts().add(savings);
 
             addAddress(user, new Address());
-//            Address address = new Address();
-//            address.setUser(user);
-//            address.setUserId(user.getUserId());
-//            user.setAddress(address);
         }
         return userRepo.save(user);
     }
 
-    //    Why does the user getting passed into this have no accounts?
-//    Why is the join table cleared??
     public User saveUser(User user) {
         User existingUser = findById(user.getUserId());
 
@@ -80,9 +71,6 @@ public class UserService {
         }
 
         existingUser = addAddress(existingUser, user.getAddress());
-
-//        user.getAddress().setUserId(user.getUserId());
-//        user.getAddress().setUser(user);
 
         return userRepo.save(existingUser);
     }
@@ -108,5 +96,18 @@ public class UserService {
         }
 
         return user;
+    }
+
+    public void addAccount(Long userId) {
+        if (userId == null) {
+            throw new IllegalArgumentException("userId cannot be null!");
+        }
+
+        User user = findById(userId);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found!");
+        }
+
+        accountService.addAccount(user);
     }
 }
