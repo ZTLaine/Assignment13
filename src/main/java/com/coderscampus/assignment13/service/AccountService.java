@@ -8,27 +8,32 @@ import com.coderscampus.assignment13.domain.Account;
 import com.coderscampus.assignment13.domain.User;
 import com.coderscampus.assignment13.repository.AccountRepository;
 import com.coderscampus.assignment13.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.AccountNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AccountService {
 
+    @Autowired
+    private UserService userService;
+
     private final UserRepository userRepo;
     private final AccountRepository accountRepo;
-    private final UserService userService;
+//    private final UserService userService;
 
-    AccountService(UserRepository userRepo, AccountRepository accountRepo, UserService userService) {
+    AccountService(UserRepository userRepo, AccountRepository accountRepo) {
         this.userRepo = userRepo;
         this.accountRepo = accountRepo;
-        this.userService = userService;
+//        this.userService = userService;
     }
 
     public Account findById(Long accountId) throws AccountNotFoundException {
         Optional<Account> accountOpt = accountRepo.findById(accountId);
-        System.out.println("After accountRepo findById is called");
         if (accountOpt.isPresent()) {
             return accountOpt.get();
         } else
@@ -45,9 +50,24 @@ public class AccountService {
         return accountRepo.save(account);
     }
 
-    public User addAccount(Long userId) {
-        User user = userService.findById(userId);
-        user.getAccounts().add(new Account());
+    public User addNewAccount(Long userId) {
+        if (userId == null) {
+            throw new IllegalArgumentException("userId cannot be null!");
+        }
 
+
+//        List<Account> accounts = new ArrayList<>();
+//        accounts.add(new Account());
+        Account account = new Account();
+        User user = userService.findById(userId);
+        if(user.getAccounts() == null) {
+            user.setAccounts(new ArrayList<>());
+        }
+
+        user.getAccounts().add(account);
+        account.setUsers(new ArrayList<>());
+        account.getUsers().add(user);
+
+        return user;
     }
 }

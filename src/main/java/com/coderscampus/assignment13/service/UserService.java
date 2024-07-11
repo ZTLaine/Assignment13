@@ -35,7 +35,7 @@ public class UserService {
         }
 
         Optional<User> userOpt = userRepo.findById(userId);
-        return userOpt.orElseThrow(() -> new RuntimeException("User not found."));
+        return userOpt.orElseThrow(() -> new RuntimeException("User not found!"));
     }
 
     public User newUser(User user) {
@@ -104,10 +104,6 @@ public class UserService {
         }
 
         User user = findById(userId);
-        if (user == null) {
-            throw new IllegalArgumentException("User not found!");
-        }
-
-        accountService.addAccount(user);
+        accountService.addNewAccount(userId);
     }
 }
