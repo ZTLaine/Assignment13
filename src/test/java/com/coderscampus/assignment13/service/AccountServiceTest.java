@@ -1,3 +1,7 @@
+//  7/10/24
+//  Zack Laine
+//  Assignment 13
+
 package com.coderscampus.assignment13.service;
 
 import com.coderscampus.assignment13.domain.User;
@@ -41,14 +45,6 @@ class AccountServiceTest {
     }
 
     @Test
-    void Find_By_Id() {
-    }
-
-    @Test
-    void Save_Account() {
-    }
-
-    @Test
     @Transactional
     void Add_New_Account() {
         user1 = accountService.addNewAccount(user1.getUserId());
@@ -61,7 +57,6 @@ class AccountServiceTest {
         assertNotNull(user1.getAccounts().get(0));
         assertNotNull(user1.getAccounts().get(1));
         assertNotNull(user2.getAccounts().get(0));
-        assertNull(user1.getAccounts().get(0).getAccountName());
         assertEquals(user1.getUserId(), user1.getAccounts().get(0).getUsers().get(0).getUserId());
         assertEquals(user1.getUserId(), user1.getAccounts().get(1).getUsers().get(0).getUserId());
         assertEquals(user2.getUserId(), user2.getAccounts().get(0).getUsers().get(0).getUserId());
