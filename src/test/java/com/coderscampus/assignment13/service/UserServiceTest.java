@@ -59,6 +59,21 @@ class UserServiceTest {
         user1.setPassword(password1);
         user2.setPassword(password2);
 
+        user1 = userService.addAddress(user1, new Address());
+        user2 = userService.addAddress(user2, new Address());
+        user1.getAddress().setAddressLine1("Test address 1");
+        user2.getAddress().setAddressLine1("Test address 2");
+        user1.getAddress().setAddressLine2("Test second address 1");
+        user2.getAddress().setAddressLine2("Test second address 2");
+        user1.getAddress().setCity("Test city 1");
+        user2.getAddress().setCity("Test city 2");
+        user1.getAddress().setRegion("Test region 1");
+        user2.getAddress().setRegion("Test region 2");
+        user1.getAddress().setZipCode("Test zipcode 1");
+        user2.getAddress().setZipCode("Test zipcode 2");
+        user1.getAddress().setCountry("Test country 1");
+        user2.getAddress().setCountry("Test country 2");
+
         userRepo.save(user1);
         userRepo.save(user2);
 
@@ -134,12 +149,7 @@ class UserServiceTest {
 
     @Test
     void Add_Address() {
-        user1 = userService.addAddress(user1, new Address());
         user2 = userService.addAddress(user2, new Address());
-        user1.getAddress().setAddressLine1("test");
-
-        userRepo.save(user1);
-        userRepo.save(user2);
 
         assertNotNull(user1.getAddress());
         assertNotNull(user2.getAddress());
@@ -147,10 +157,26 @@ class UserServiceTest {
         assertEquals(user2, user2.getAddress().getUser());
         assertEquals(user1.getUserId(), user1.getAddress().getUserId());
         assertEquals(user2.getUserId(), user2.getAddress().getUserId());
-        assertEquals(user1.getAddress().getAddressLine1(), "test");
+        assertEquals(user1.getAddress().getAddressLine1(), "Test address 1");
         assertNull(user2.getAddress().getAddressLine1());
 
         assertThrows(IllegalArgumentException.class, () -> userService.addAddress(null, new Address()));
         assertThrows(IllegalArgumentException.class, () -> userService.addAddress(user1, null));
+    }
+
+    @Test
+    void Update_Only_Modifies_Provided_Fields() {
+        user1.setUsername("Updated username");
+        user1 = userService.saveUser(user1);
+
+        assertEquals("Updated username", user1.getUsername());
+        assertEquals("Test password 1", user1.getPassword());
+        assertEquals("Test name 1", user1.getName());
+        assertEquals("Test address 1", user1.getAddress().getAddressLine1());
+        assertEquals("Test second address 1", user1.getAddress().getAddressLine2());
+        assertEquals("Test city 1", user1.getAddress().getCity());
+        assertEquals("Test region 1", user1.getAddress().getRegion());
+        assertEquals("Test zipcode 1", user1.getAddress().getZipCode());
+        assertEquals("Test country 1", user1.getAddress().getCountry());
     }
 }
