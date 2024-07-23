@@ -64,12 +64,10 @@ public class UserService {
         User existingUser = findById(user.getUserId());
 
         if (existingUser != null) {
-            if(!user.getUsername().isEmpty()) {
-                existingUser.setUsername(user.getUsername());
-            }
             if (!user.getPassword().isEmpty()) {
                 existingUser.setPassword(user.getPassword());
             }
+            existingUser.setUsername(user.getUsername());
             existingUser.setName(user.getName());
             existingUser.setAddress(user.getAddress());
         }
