@@ -10,7 +10,10 @@ import com.coderscampus.assignment13.domain.User;
 import com.coderscampus.assignment13.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -64,6 +67,33 @@ public class UserService {
         User existingUser = findById(user.getUserId());
 
         if (existingUser != null) {
+            for (Field field : existingUser.getClass().getDeclaredFields()) {
+                try {
+                    field.setAccessible(true);
+
+                    String fieldName = field.getName();
+                    String getterName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+                    String setterName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+
+                    Method getter = existingUser.getClass().getMethod(getterName);
+                    Method setter = existingUser.getClass().getMethod(setterName, field.getType());
+
+                    Object existingFieldValue = getter.invoke(existingUser);
+                    Object newFieldValue = getter.invoke(user);
+
+                    if (!Objects.equals(existingFieldValue, newFieldValue)) {
+                        if (fieldName.equals("password") || fieldName.equals("username")) {
+                            if (newFieldValue != "") {
+                                setter.invoke(existingUser, newFieldValue);
+                            }
+                        } else {
+                            setter.invoke(existingUser, newFieldValue);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             existingUser.setName(user.getName());
             existingUser.setUsername(user.getUsername());
             existingUser.setPassword(user.getPassword());
