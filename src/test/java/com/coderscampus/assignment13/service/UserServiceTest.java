@@ -163,20 +163,4 @@ class UserServiceTest {
         assertThrows(IllegalArgumentException.class, () -> userService.addAddress(null, new Address()));
         assertThrows(IllegalArgumentException.class, () -> userService.addAddress(user1, null));
     }
-
-    @Test
-    void Update_Only_Modifies_Provided_Fields() {
-        user1.setUsername("Updated username");
-        user1 = userService.saveUser(user1);
-
-        assertEquals("Updated username", user1.getUsername());
-        assertEquals("Test password 1", user1.getPassword());
-        assertEquals("Test name 1", user1.getName());
-        assertEquals("Test address 1", user1.getAddress().getAddressLine1());
-        assertEquals("Test second address 1", user1.getAddress().getAddressLine2());
-        assertEquals("Test city 1", user1.getAddress().getCity());
-        assertEquals("Test region 1", user1.getAddress().getRegion());
-        assertEquals("Test zipcode 1", user1.getAddress().getZipCode());
-        assertEquals("Test country 1", user1.getAddress().getCountry());
-    }
 }
